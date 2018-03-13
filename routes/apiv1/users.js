@@ -25,7 +25,7 @@ router.post('/', (req, res, next) => {
     //console.log(req.body);
     const user = new User(req.body);
     
-    user.password = sha.x2(usuario.password);  
+    user.password = sha.x2(user.password);  
     user.save((err, userSave) => {
         if(err){
             next(err);
@@ -37,25 +37,22 @@ router.post('/', (req, res, next) => {
 
 router.post('/authenticate', (req, res, next)=>{
     const user = req.body;
-    if(user){                      //hay usuario y pass
+    const password = sha.x2(user.password)
+    if(user){                      //hay algo en el body...
             User.findOne({email: req.body.email}).exec((err, data)=>{
                 if (err){
-                    next(err);
-                    return;
+                    return (next(err));
                 }
                 if (data === null){                      //no devuelve nada por ese email
-                    res.sendStatus(401);
-                    return;
+                    return(res.sendStatus(401));
                 }
                 if (data.password !== sha.x2(user.password)){    // tiene que coincidir usuario y pass
-                    res.sendStatus(401);
-                    return;
+                    return (res.sendStatus(401));
                 }
-                res.json({success: true, token: tokens.createToken(data)});
+                console.log(data);
+                res.json({success: true, token: tokens.createToken(data), username: data.username, dogs: data.dogs});
             });
         }
-        // siempre devolvemos token para test, borrar en producción
-        res.json({success: true, token: tokens.createToken('2811281232138192321321')});
 });
 
 module.exports = router;
