@@ -49,7 +49,7 @@ router.post('/authenticate', (req, res, next)=>{
                 if (data.password !== sha.x2(user.password)){    // tiene que coincidir usuario y pass
                     return (res.sendStatus(401));
                 }
-                console.log(data);
+                // console.log(data);
                 res.json({success: true, token: tokens.createToken(data), username: data.username, dogs: data.dogs});
             });
         }
