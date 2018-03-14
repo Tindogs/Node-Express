@@ -9,7 +9,7 @@ const auth = require('../../lib/auth');
 
 /* Find Dogs By UserId */
 // GET HTTP METHOD
-// Needs a valid token key value at header request
+// Needs a valid token, a pair of key:value named token at the header
 // EXAMPLE: http://localhost:3000/apiv1/dogs/fromuser?id=5aa720e07dc74c4677a5c313
 
 router.get('/fromuser', auth,  (req, res, next) => {
@@ -29,8 +29,8 @@ router.get('/fromuser', auth,  (req, res, next) => {
 
 /* New Dog or Update Dog By UserId */
 // PUT HTTP METHOD
-// Needs a valid token key value at header request
-// Send object at body with raw application/json content type
+// Needs a valid token, a pair of key:value named token at the header
+// Send object at body with a raw application/json content type
 // EXAMPLE: http://localhost:3000/apiv1/dogs/withuser?id=5aa720e07dc74c4677a5c313
 
 router.put('/withuser', auth, (req, res, next) => {

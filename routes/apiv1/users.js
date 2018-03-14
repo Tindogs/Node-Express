@@ -24,7 +24,7 @@ const auth = require('../../lib/auth');
 
 /* Find User By UserId */
 // GET HTTP METHOD
-// Needs a valid token key value at header request
+// Needs a valid token, a pair of key:value named token at the header
 // EXAMPLE: http://localhost:3000/apiv1/users/with?id=5aa720e07dc74c4677a5c313
 
 router.get('/with', auth, (req, res, next) => {
@@ -61,8 +61,8 @@ router.post('/register', (req, res, next) => {
 
 /* Update User */
 // PUT HTTP METHOD
-// Needs a valid token key value at header request
-// Send object at body with raw application/json content type
+// Needs a valid token, a pair of key:value named token at the header
+// Send object at body with a raw application/json content type
 // EXAMPLE: http://localhost:3000/apiv1/users/with?id=5aa720e07dc74c4677a5c313
 router.put('/with', auth, (req, res, next) => {
     
@@ -87,7 +87,9 @@ router.put('/with', auth, (req, res, next) => {
 
 /* Authentication */
 // POST HTTP METHOD
-// Needs to key values at body, email and password, with application/x-www-form-urlencoded content type
+// Needs two pairs of key:value items at body, named email and password, 
+// Send request with application/x-www-form-urlencoded content type
+// EXAMPLE: http://localhost:3000/apiv1/users/authenticate
 router.post('/authenticate', (req, res, next)=>{
 
     console.log(req.body);
