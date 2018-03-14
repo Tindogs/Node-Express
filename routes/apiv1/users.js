@@ -9,27 +9,13 @@ const tokens   = require('../../lib/tokens');
 
 const auth = require('../../lib/auth');
 
-/* GET /apiv1/users */
-// router.get('/', (req, res, next) => {
-//     User.find().exec((err, users) => {
-//         if (err) {
-//             next(err);
-//             return
-//         }
-
-//         res.json({ success: true, result: users });
-
-//     });
-// });
-
 /* Find User By UserId */
 // GET HTTP METHOD
 // Needs a valid token, a pair of key:value named token at the header
-// EXAMPLE: http://localhost:3000/apiv1/users/with?id=5aa720e07dc74c4677a5c313
+// EXAMPLE: http://localhost:3000/apiv1/users/5aa997a2d5d9b8046a908253
+router.get('/:id', auth, (req, res, next) => {
 
-router.get('/with', auth, (req, res, next) => {
-
-    User.findById(req.query.id, (err, users) => {
+    User.findById(req.params.id, (err, users) => {
         if (err) {
             next(err);
             return
@@ -43,7 +29,16 @@ router.get('/with', auth, (req, res, next) => {
 
 /* user registration */
 // POST HTTP METHOD
-// EXAMPLE: 
+// Send object at body with a raw application/json content type
+// EXAMPLE: http://localhost:3000/apiv1/users/register
+// Body content like this:
+// {
+//     "first_name" : "Chiquito",
+//     "last_name" : "de la Calzada",
+//     "email" : "chiquito@barbate.com",
+//     "username" : "Chiquito",
+//     "password" : "fistro"
+//   }
 router.post('/register', (req, res, next) => {
     
     const user = new User(req.body);
@@ -63,15 +58,27 @@ router.post('/register', (req, res, next) => {
 // PUT HTTP METHOD
 // Needs a valid token, a pair of key:value named token at the header
 // Send object at body with a raw application/json content type
-// EXAMPLE: http://localhost:3000/apiv1/users/with?id=5aa720e07dc74c4677a5c313
-router.put('/with', auth, (req, res, next) => {
+// EXAMPLE: http://localhost:3000/apiv1/users/5aa997a2d5d9b8046a908253
+// Body content like this:
+// {
+// 	"first_name" : "Lucas",
+// 	"last_name" : "Grijander",
+// 	"email" : "lucas@barbate.com",
+// 	"username" : "Lucas",
+// 	"password" : "nopuedorl",
+// 	"coordinates" : [
+//         37.356471,
+// 		-5.981709
+// 	]
+// }
+router.put('/:id', auth, (req, res, next) => {
     
-    User.findById(req.query.id, (err, userUpdate) => {
+    User.findById(req.params.id, (err, userUpdate) => {
         userUpdate.first_name = req.body.first_name;
         userUpdate.last_name = req.body.last_name;
         userUpdate.email = req.body.email
         userUpdate.username = req.body.username
-        userUpdate.password = req.body.password
+        userUpdate.password = sha.x2(req.body.password)
         userUpdate.coordinates = req.body.coordinates
         
         userUpdate.save((err, userSave) => {
