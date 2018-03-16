@@ -23,6 +23,15 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// ENABLE CORS
+// https://enable-cors.org/index.html
+app.use(function(req, res, next) {
+  res.set("Access-Control-Allow-Origin","*");
+  res.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+  res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With,Content-Type, Accept");
+  next();
+ });
+
 // WEB
 app.use('/', require('./routes/index'));
 

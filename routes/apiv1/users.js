@@ -99,7 +99,6 @@ router.put('/:id', auth, (req, res, next) => {
 // EXAMPLE: http://localhost:3000/apiv1/users/authenticate
 router.post('/authenticate', (req, res, next)=>{
 
-    console.log(req.body);
     const user = req.body;
     const password = sha.x2(user.password)
     if(user){                      //hay algo en el body...
@@ -113,8 +112,8 @@ router.post('/authenticate', (req, res, next)=>{
                 if (data.password !== sha.x2(user.password)){    // tiene que coincidir usuario y pass
                     return (res.sendStatus(401));
                 }
-                // console.log(data);
-                res.json({success: true, token: tokens.createToken(data), username: data.username, dogs: data.dogs});
+
+                res.json({success: true, token: tokens.createToken(data), username: data.username, userid: data._id, dogs: data.dogs});
             });
         }
 });
