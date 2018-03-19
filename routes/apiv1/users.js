@@ -49,7 +49,7 @@ router.post('/register', (req, res, next) => {
             next(err);
             return;
         }
-        res.json({ success: true, result: userSave, token: tokens.createToken(user) }); 
+        res.json({ success: true, token: tokens.createToken(user), result: userSave  }); 
     });
 });
 
@@ -112,8 +112,9 @@ router.post('/authenticate', (req, res, next)=>{
                 if (data.password !== sha.x2(user.password)){    // tiene que coincidir usuario y pass
                     return (res.sendStatus(401));
                 }
-
-                res.json({success: true, token: tokens.createToken(data), username: data.username, userid: data._id, dogs: data.dogs});
+                console.log(data)
+                //res.json({success: true, token: tokens.createToken(data), username: data.username, userid: data._id, dogs: data.dogs});
+                res.json({success: true, token: tokens.createToken(data), result:data});
             });
         }
 });

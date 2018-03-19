@@ -18,7 +18,7 @@ router.get('/fromuser/:id', auth,  (req, res, next) => {
             return
         }
 
-        res.json({ success: true, result: users.dogs });
+        res.json({ success: true, result: users });
 
     });
 });
