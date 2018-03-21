@@ -12,6 +12,7 @@ const userSchema = mongoose.Schema({
     username: String,
     password: String,
     coordinates: [Number],
+    photo: String,
     dogs: [{
         name: String,
         age: Number,
