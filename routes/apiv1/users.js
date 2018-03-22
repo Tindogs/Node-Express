@@ -76,10 +76,11 @@ router.put('/:id', auth, (req, res, next) => {
     User.findById(req.params.id, (err, userUpdate) => {
         userUpdate.first_name = req.body.first_name;
         userUpdate.last_name = req.body.last_name;
-        userUpdate.email = req.body.email
-        userUpdate.username = req.body.username
-        userUpdate.password = sha.x2(req.body.password)
-        userUpdate.coordinates = req.body.coordinates
+        userUpdate.email = req.body.email;
+        userUpdate.username = req.body.username;
+        userUpdate.password = sha.x2(req.body.password);
+        userUpdate.coordinates = req.body.coordinates;
+        userUpdate.photo = req.body.photo;
         
         userUpdate.save((err, userSave) => {
             if(err){
