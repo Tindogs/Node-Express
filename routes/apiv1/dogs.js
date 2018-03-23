@@ -42,7 +42,7 @@ router.get('/fromuser/:id', auth,  (req, res, next) => {
 //         "description": "Dog's Description",
 //     }, etc.. ]
 // }
-router.put('/withuser/:id', (req, res, next) => {
+router.put('/withuser/:id', auth, (req, res, next) => {
     User.findById(req.params.id, (err, dogsUpdate) => {
         if(err){
             next(err);

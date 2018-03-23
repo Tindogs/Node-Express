@@ -13,7 +13,7 @@ const auth = require('../../lib/auth');
 // GET HTTP METHOD
 // Needs a valid token, a pair of key:value named token at the header
 // EXAMPLE: http://localhost:3000/apiv1/users/5aa997a2d5d9b8046a908253
-router.get('/:id', (req, res, next) => {
+router.get('/:id', auth, (req, res, next) => {
 
     User.findById(req.params.id, (err, users) => {
         if (err) {
@@ -72,7 +72,7 @@ router.post('/register', (req, res, next) => {
 // 	]
 // }
 
-router.put('/:id', (req, res, next) => {
+router.put('/:id', auth, (req, res, next) => {
     let userId = req.params.id;
     let update = req.body;
 
