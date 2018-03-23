@@ -13,7 +13,7 @@ const auth = require('../../lib/auth');
 // GET HTTP METHOD
 // Needs a valid token, a pair of key:value named token at the header
 // EXAMPLE: http://localhost:3000/apiv1/users/5aa997a2d5d9b8046a908253
-router.get('/:id', auth, (req, res, next) => {
+router.get('/:id', (req, res, next) => {
 
     User.findById(req.params.id, (err, users) => {
         if (err) {
@@ -71,24 +71,18 @@ router.post('/register', (req, res, next) => {
 // 		-5.981709
 // 	]
 // }
-router.put('/:id', auth, (req, res, next) => {
-    
-    User.findById(req.params.id, (err, userUpdate) => {
-        userUpdate.first_name = req.body.first_name;
-        userUpdate.last_name = req.body.last_name;
-        userUpdate.email = req.body.email;
-        userUpdate.username = req.body.username;
-        userUpdate.password = sha.x2(req.body.password);
-        userUpdate.coordinates = req.body.coordinates;
-        userUpdate.photo = req.body.photo;
+
+router.put('/:id', (req, res, next) => {
+    let userId = req.params.id;
+    let update = req.body;
+
+    User.findByIdAndUpdate(userId, update, {new: true}, (err, userUpdate) => {
+        if(err){
+            next(err);
+            return;
+        };
         
-        userUpdate.save((err, userSave) => {
-            if(err){
-                next(err);
-                return;
-            }
-            res.json({success: true, result: userSave})
-        });
+        res.json({success: true, result: userUpdate})
     });
 });
 

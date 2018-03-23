@@ -42,27 +42,34 @@ router.get('/fromuser/:id', auth,  (req, res, next) => {
 //         "description": "Dog's Description",
 //     }, etc.. ]
 // }
-router.put('/withuser/:id', auth, (req, res, next) => {
-    User.findById(req.params.id, (err, userUpdate) => {
-        
-        userUpdate.dogs = req.body.dogs
-        
-        for (var item in req.body.dogs){
-            userUpdate.dogs[item].name = req.body.dogs[item].name
-            userUpdate.dogs[item].age = req.body.dogs[item].age
-            userUpdate.dogs[item].breed = req.body.dogs[item].breed
-            userUpdate.dogs[item].purebreed = req.body.dogs[item].purebreed
-            userUpdate.dogs[item].color = req.body.dogs[item].color
-            userUpdate.dogs[item].description = req.body.dogs[item].description
-            userUpdate.dogs[item].photos = req.body.dogs[item].photos
+router.put('/withuser/:id', (req, res, next) => {
+    User.findById(req.params.id, (err, dogsUpdate) => {
+        if(err){
+            next(err);
+            return;
         }
         
-        userUpdate.save((err, userSave) => {
+        dogsUpdate.dogs = req.body.dogs
+        
+        for (var item in req.body.dogs){
+            if (req.body.dogs[item].name && req.body.dogs[item].age && req.body.dogs[item].breed && req.body.dogs[item].purebreed && req.body.dogs[item].color && req.body.dogs[item].description && req.body.dogs[item].photos !== undefined){
+                dogsUpdate.dogs[item].name = req.body.dogs[item].name;
+                dogsUpdate.dogs[item].age = req.body.dogs[item].age;
+                dogsUpdate.dogs[item].breed = req.body.dogs[item].breed;
+                dogsUpdate.dogs[item].purebreed = req.body.dogs[item].purebreed;
+                dogsUpdate.dogs[item].color = req.body.dogs[item].color;
+                dogsUpdate.dogs[item].description = req.body.dogs[item].description;
+                dogsUpdate.dogs[item].photos = req.body.dogs[item].photos;
+            }
+
+        }
+        
+        dogsUpdate.save((err, dogSave) => {
             if(err){
                 next(err);
                 return;
             }
-            res.json({success: true, result: userSave})
+            res.json({success: true, result: dogSave})
         });
     });
 });
