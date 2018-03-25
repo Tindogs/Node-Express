@@ -32,47 +32,34 @@ router.get('/fromuser/:id', auth,  (req, res, next) => {
 // EXAMPLE: http://localhost:3000/apiv1/dogs/withuser/5aa997a2d5d9b8046a908253
 // Body content like this:
 // {
-// "dogs" : [
-//     {
-//         "likes_from_others": [],
-//         "photos": [],
-//         "name": "Dog's name",
-//         "age": XX,
-//         "purebreed": false,
-//         "description": "Dog's Description",
-//     }, etc.. ]
+//     "likes_from_others": [],
+//     "photos": [],
+//     "name": "Dog's name",
+//     "age": XX,
+//     "purebreed": false,
+//     "description": "Dog's Description",
 // }
 router.put('/withuser/:id', auth, (req, res, next) => {
-    User.findById(req.params.id, (err, dogsUpdate) => {
+    let userId = req.params.id;
+
+    var dog = {
+        'name': req.body.name,
+        'age': req.body.age,
+        'breed': req.body.breed,
+        'purebreed': req.body.purebreed,
+        'color': req.body.color,
+        'description': req.body.description,
+        'photos': req.body.photos
+    }
+
+    User.findByIdAndUpdate(userId, {$push:{dogs: dog}}, {new: true}, (err, dogSave) => {
         if(err){
             next(err);
             return;
-        }
+        };
         
-        dogsUpdate.dogs = req.body.dogs
-        
-        for (var item in req.body.dogs){
-            if (req.body.dogs[item].name && req.body.dogs[item].age && req.body.dogs[item].breed && req.body.dogs[item].purebreed && req.body.dogs[item].color && req.body.dogs[item].description && req.body.dogs[item].photos !== undefined){
-                dogsUpdate.dogs[item].name = req.body.dogs[item].name;
-                dogsUpdate.dogs[item].age = req.body.dogs[item].age;
-                dogsUpdate.dogs[item].breed = req.body.dogs[item].breed;
-                dogsUpdate.dogs[item].purebreed = req.body.dogs[item].purebreed;
-                dogsUpdate.dogs[item].color = req.body.dogs[item].color;
-                dogsUpdate.dogs[item].description = req.body.dogs[item].description;
-                dogsUpdate.dogs[item].photos = req.body.dogs[item].photos;
-            }
-
-        }
-        
-        dogsUpdate.save((err, dogSave) => {
-            if(err){
-                next(err);
-                return;
-            }
-            res.json({success: true, result: dogSave})
-        });
+        res.json({success: true, result: dogSave})
     });
 });
-
 
 module.exports = router;
