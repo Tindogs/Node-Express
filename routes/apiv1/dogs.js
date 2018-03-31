@@ -54,7 +54,7 @@ router.put('/withuser/:id', auth, (req, res, next) => {
         'photos': req.body.photos
     }
 
-    User.findByIdAndUpdate(userId, {$push:{dogs: dog}}, { new: true}, (err, dogSave) => {
+    User.findByIdAndUpdate(userId, {$addToSet:{dogs: dog}}, {upsert:true, new: true}, (err, dogSave) => {
         if(err){
             next(err);
             return;
