@@ -93,13 +93,13 @@ router.put('/withuser/:id/withdog/:dogId', auth, (req, res, next) => {
         'photos': req.body.photos
     }
 
-    console.log(dog);
-    console.log("Id del usuario: " + userId);
-    console.log("Id del Perro: " + dogId);
+    // console.log(dog);
+    // console.log("Id del usuario: " + userId);
+    // console.log("Id del Perro: " + dogId);
 
-    User.findByIdAndUpdate(
-        {_id: userId, dogs: [{_id: dogId}]},
-        { $set : { "dogs" : dog }},
+    User.findOneAndUpdate(
+        {"_id": userId, "dogs._id": dogId },
+        { $set : { "dogs.$" : dog }},
         {upsert: true, new: true}, (err, userUpdate) => {
         if(err){
             next(err);
