@@ -2,7 +2,7 @@
 
 const mongoose = require('mongoose');
 
-const ObjectId = mongoose.Schema.ObjectId
+const ObjectId = mongoose.Schema.ObjectId;
 
 // Esquema User
 const userSchema = mongoose.Schema({
@@ -28,8 +28,8 @@ const userSchema = mongoose.Schema({
         }],
         description: String,
         photos: [String]
-    }]    
-})
+    }]
+});
 
 const User = mongoose.model('User', userSchema);
 

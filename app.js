@@ -1,15 +1,34 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
-var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
+'use strict';
+
+const express = require('express');
+const path = require('path');
+const logger = require('morgan');
+const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
+const winston = require('winston');
+
+//Configuramos la utilidad de log
+winston.add(winston.transports.File, {
+    name: 'error-file',
+    filename: './logs/errors.log',
+    handleExceptions: true,
+    humanReadableUnhandledException: true,
+    level: 'error'
+});
+
+
+winston.add(winston.transports.File, {
+    name: 'info-file',
+    filename: './logs/info.log',
+    level: 'info'
+});
+
 
 // Mongoose - Model
 require('./lib/connectMongoose');
 require('./models/User');
 
-var app = express();
+const app = express();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -26,11 +45,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 // ENABLE CORS
 // https://enable-cors.org/index.html
 app.use(function(req, res, next) {
-  res.set("Access-Control-Allow-Origin","*");
-  res.set("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, token");
-  next();
- });
+    res.set('Access-Control-Allow-Origin','*');
+    res.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, token');
+    next();
+});
 
 // WEB
 app.use('/', require('./routes/index'));
@@ -41,31 +60,31 @@ app.use('/apiv1/dogs', require('./routes/apiv1/dogs'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
+app.use(function(err, req, res) {
+    res.status(err.status || 500);
   
-  if (isApi(req)){
-    res.json({success: false, error: err.message});
-    return;
+    if (isApi(req)){
+        res.json({success: false, error: err.message});
+        return;
   }
   
   // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
-  res.render('error');
+    res.render('error');
 });
 
 // Comprueba si estamos recibiendo una petición para la ruta /api
 function  isApi(req){
-  return req.originalUrl.indexOf('/api') === 0;
+    return req.originalUrl.indexOf('/api') === 0;
 }
 
 module.exports = app;
