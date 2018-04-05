@@ -56,7 +56,7 @@ app.use('/', require('./routes/index'));
 
 //API
 app.use('/apiv1/users', require('./routes/apiv1/users'));
-app.use('/apiv1/dogs', require('./routes/apiv1/dogs'));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -72,7 +72,7 @@ app.use(function(err, req, res) {
     if (isApi(req)){
         res.json({success: false, error: err.message});
         return;
-  }
+    }
   
   // set locals, only providing error in development
     res.locals.message = err.message;
