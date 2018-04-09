@@ -19,7 +19,7 @@ const userSchema = mongoose.Schema({
         breed: String,
         purebreed: Boolean,
         color: String,
-        query: { age: String, max_kms: Number, reproductive: Boolean, breed: String },
+        query: { age: Number, max_kms: Number, reproductive: Boolean, breed: String },
         likes_from_others: [{
             dog_like_id: ObjectId,
             dog_name: String,

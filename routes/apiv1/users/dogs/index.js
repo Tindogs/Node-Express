@@ -44,7 +44,11 @@ router.put('/', auth, require('./dog-register'));
 //     "purebreed": false,
 //     "color": "Dog´s color",
 //     "description": "Dog's Description",
+//     "queryage": 99,
+//     "querymaxkms": 99,
+//     "queryreproductive": false,
+//     "querybreed": "Dog`s breed"
 // }
 router.put('/:dogId', auth, require('./dog-update'));
-
+router.get('/:dogId/search', auth, require('./dog-search'));
 module.exports = router;

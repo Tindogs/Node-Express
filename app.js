@@ -5,23 +5,23 @@ const path = require('path');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
-const winston = require('winston');
+//const winston = require('winston');
 
-//Configuramos la utilidad de log
-winston.add(winston.transports.File, {
-    name: 'error-file',
-    filename: './logs/errors.log',
-    handleExceptions: true,
-    humanReadableUnhandledException: true,
-    level: 'error'
-});
+// //Configuramos la utilidad de log
+// winston.add(winston.transports.File, {
+//     name: 'error-file',
+//     filename: './logs/errors.log',
+//     handleExceptions: true,
+//     humanReadableUnhandledException: true,
+//     level: 'error'
+// });
 
 
-winston.add(winston.transports.File, {
-    name: 'info-file',
-    filename: './logs/info.log',
-    level: 'info'
-});
+// winston.add(winston.transports.File, {
+//     name: 'info-file',
+//     filename: './logs/info.log',
+//     level: 'info'
+// });
 
 
 // Mongoose - Model

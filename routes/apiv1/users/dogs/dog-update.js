@@ -33,6 +33,21 @@ module.exports = function (req, res, next) {
     if (req.body.photos) {
         setFields['dogs.$.photos'] = req.body.photos;
     }
+    if (req.body.queryage) {
+      
+        setFields['dogs.$.query.age'] = req.body.queryage;
+    }
+    if (req.body.querymaxkms) {
+        setFields['dogs.$.query.max_kms'] = req.body.querymaxkms;
+    }
+    
+    if (req.body.queryreproductive) {
+        setFields['dogs.$.query.reproductive'] = req.body.queryreproductive;
+    }
+
+    if (req.body.querybreed) {
+        setFields['dogs.$.query.breed'] = req.body.querybreed;
+    }
 
     User.findOneAndUpdate(
         { '_id': userId, 'dogs._id': dogId },

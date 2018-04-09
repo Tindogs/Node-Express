@@ -1,5 +1,5 @@
 'use strict';
-const User = require('../../../../models/User')
+const User = require('../../../../models/User');
 
 module.exports = function (req, res, next) {
     User.findById(req.params.id, (err, users) => {
@@ -11,4 +11,4 @@ module.exports = function (req, res, next) {
         res.json({ success: true, result: users });
 
     });
-}
+};
