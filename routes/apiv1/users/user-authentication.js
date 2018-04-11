@@ -3,7 +3,6 @@ const User = require('../../../models/User');
 
 const sha = require('sha256');
 const tokens = require('../../../lib/tokens');
-const winston = require('winston');
 
 module.exports = function (req, res, next) {
 
@@ -19,8 +18,7 @@ module.exports = function (req, res, next) {
             if (data.password !== sha.x2(user.password)) {    // tiene que coincidir usuario y pass
                 return (res.sendStatus(401));
             }
-            winston.info(data);
-            
+          
             res.json({ success: true, token: tokens.createToken(data), result: data });
         });
     }

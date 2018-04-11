@@ -56,4 +56,17 @@ router.put('/:dogId', auth, require('./dog-update'));
 // EXAMPLE: http://localhost:3000/apiv1/users/5aa997a2d5d9b8046a908253/dogs/5ab7c85875b8dcb2053db1e0/search
 router.get('/:dogId/search', auth, require('./dog-search'));
 
+router.put('/', auth, require('./dog-register'));
+
+/* Update Dog By UserId and DogsId */
+// PUT HTTP METHOD
+// Needs a valid token, a pair of key:value named token at the header
+// Send object at body with a raw application/json content type
+// EXAMPLE: http://localhost:3000/apiv1/users/5aa997a2d5d9b8046a908253/dogs/5ab7c85875b8dcb2053db1e0/like/5ab7c85875b8dcb20525ghd
+// Body content like this:
+// {
+//     "like": true/false
+// }
+router.put('/:dogId/like/:otherDogId', auth, require('./dog-like'));
+
 module.exports = router;
