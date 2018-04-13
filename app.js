@@ -10,7 +10,7 @@ const winston = require('winston');
 // //Configuramos la utilidad de log
 winston.add(winston.transports.File, {
     name: 'error-file',
-    filename: './logs/errors.log',
+    filename: './logs/errors.json',
     handleExceptions: true,
     humanReadableUnhandledException: true,
     level: 'error'
@@ -19,7 +19,7 @@ winston.add(winston.transports.File, {
 
 winston.add(winston.transports.File, {
     name: 'info-file',
-    filename: './logs/info.log',
+    filename: './logs/info.json',
     level: 'info'
 });
 
