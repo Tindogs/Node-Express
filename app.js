@@ -6,6 +6,8 @@ const logger = require('morgan');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const winston = require('winston');
+// Cargamos Custom Errors
+const CustomError = require('./lib/CustomError');
 
 // //Configuramos la utilidad de log
 winston.add(winston.transports.File, {
@@ -67,11 +69,18 @@ app.use(function(req, res, next) {
 });
 
 // error handler
-app.use(function(err, req, res) {
+app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-  
-    if (isApi(req)){
-        res.json({success: false, error: err.message});
+     if (isApi(req)) {
+
+        winston.error('Error %s, status: %d', err.message, err.status);
+
+        if (err instanceof CustomError) {
+            const culture = req.query.culture || req.body.culture;
+            res.json(err.toPrettyObject(culture));
+        } else {
+            res.json({ succes: false, error: err.message });
+        }
         return;
     }
   

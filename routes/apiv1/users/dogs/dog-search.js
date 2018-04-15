@@ -16,8 +16,8 @@ module.exports = function (req, res, next) {
             }
             let query = user.dogs[0].query;
            
-            if (query) {
-                if (user.coordinates && user.coordinates.length > 0) {
+            if (query && (query.age || query.breed || query.max_kms) ) {
+                if (user.coordinates && user.coordinates.length > 0 && query.max_kms) {
                     let maxDistance = geoUtils.getRadsFromDistance(query.max_kms);
                     User.where('coordinates').near({ center: user.coordinates, maxDistance: maxDistance, spherical: true, })
                         .where('_id').ne(user._id)
@@ -42,7 +42,7 @@ module.exports = function (req, res, next) {
                 } else {
                     var searchFilter = {};
                     if (query.age && query.age >= 0 && query.breed && query.breed !== '') {
-                        searchFilter = { $and: [{ 'dogs.age': query.age }, { 'dogs.breed': query.breed }] }
+                        searchFilter = { $and: [{ 'dogs.age': query.age }, { 'dogs.breed': query.breed }] };
                     } else if (query.age && query.age >= 0) { 
                         searchFilter = { 'dogs.age': query.age };
                     } else if (query.breed && query.breed !== '') { 
@@ -64,10 +64,8 @@ module.exports = function (req, res, next) {
                             res.json({ success: true, result: dogs });
                         });
                 }
-               
-
             } else { 
-                res.json({ success: true, result: [] });
+              res.json({ success: true, result: [] });
             }
         });
     
