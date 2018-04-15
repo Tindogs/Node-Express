@@ -65,7 +65,7 @@ module.exports = function (req, res, next) {
                         });
                 }
             } else { 
-              res.json({ success: true, result: [] });
+                res.json({ success: true, result: [] });
             }
         });
     

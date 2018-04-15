@@ -8,7 +8,7 @@ const tokens = require('../../../lib/tokens');
 module.exports = function (req, res, next) {
     const user = new User(req.body);
     user.password = sha.x2(user.password);
-    user.save.then(userSave => {
+    user.save().then(userSave => {
         
         res.json({ success: true, token: tokens.createToken(user), result: userSave });
     }).catch(err => { 

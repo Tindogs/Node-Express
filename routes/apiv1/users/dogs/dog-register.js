@@ -50,8 +50,6 @@ module.exports = function (req, res, next) {
         dog['query.breed'] = req.body.querybreed;
     }
 
-    console.log(dog);
-
     User.findByIdAndUpdate(userId, { $addToSet: { dogs: dog } }, { upsert: true, new: true }, (err, dogSave) => {
         if (err) {
             next(err);
