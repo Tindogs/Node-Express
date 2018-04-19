@@ -41,14 +41,14 @@ module.exports = function (req, res, next) {
         let otherDogId = req.params.otherDogId;
         let dogId = req.params.dogId;
         let userId = req.params.id;
-        var isMatch = false;
+       
         Promise.all([User.findOne({ 'dogs._id': otherDogId }), User.findById(userId)])
             .then(results => {
                 let otherUser = results[0];
                 let myUser = results[1];
                 let otherDog = otherUser.dogs.filter(dog => dog._id.toString() === otherDogId.toString())[0];
                 let myDog = myUser.dogs.filter(dog => dog._id.toString() === dogId.toString())[0];
-
+                var result = { match: false };
                 // Está mi perro en el like_from_other del otro perro (es decir, ya le he dado like a este perro)
                 let isMyDogInOtherDogsLikes = otherDog.likes_from_others.filter(like => like.dog_like_id.toString() === dogId.toString()).length === 1;
                 // Está el otro perro en mis likes
@@ -83,9 +83,10 @@ module.exports = function (req, res, next) {
                         }
                     };
                     promises.push(Match(match).save());
-                    isMatch = true;
+                    result.match = true;
+                    result.dog = otherDog;
                 }
-                promises.push(Promise.resolve(isMatch));
+                promises.push(Promise.resolve(result));
                 return Promise.all(promises);
             })
             .then(results => {
