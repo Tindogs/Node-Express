@@ -50,15 +50,19 @@ router.put('/', auth, require('./dog-register'));
 // }
 router.put('/:dogId', auth, require('./dog-update'));
 
-/* Find Dogs By UserId */
+/* Find Dogs By UserId, DogId */
 // GET HTTP METHOD
 // Needs a valid token, a pair of key:value named token at the header
 // EXAMPLE: http://localhost:3000/apiv1/users/5aa997a2d5d9b8046a908253/dogs/5ab7c85875b8dcb2053db1e0/search
 router.get('/:dogId/search', auth, require('./dog-search'));
 
-router.put('/', auth, require('./dog-register'));
+/* Return matches By UserId, DogId */
+// GET HTTP METHOD
+// Needs a valid token, a pair of key:value named token at the header
+// EXAMPLE: http://localhost:3000/apiv1/users/5aa997a2d5d9b8046a908253/dogs/5ab7c85875b8dcb2053db1e0/match
+router.get('/:dogId/matches', auth, require('./dog-matches'));
 
-/* Update Dog By UserId and DogsId */
+/* Like Dog By UserId, DogsId and OtherDogsId*/
 // PUT HTTP METHOD
 // Needs a valid token, a pair of key:value named token at the header
 // Send object at body with a raw application/json content type

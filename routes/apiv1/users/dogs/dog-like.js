@@ -51,7 +51,7 @@ module.exports = function (req, res, next) {
                 var result = { match: false };
                 // Está mi perro en el like_from_other del otro perro (es decir, ya le he dado like a este perro)
                 let isMyDogInOtherDogsLikes = otherDog.likes_from_others.filter(like => like.dog_like_id.toString() === dogId.toString()).length === 1;
-                // Está el otro perro en mis likes
+                // Está el otro perro en mis likes (es decir, el otro perro me ha dado like a mí)
                 let isOtherDogInMyDogsLikes = myDog.likes_from_others.filter(like => like.dog_like_id.toString() === otherDogId.toString()).length === 1;
                 
                 let promises = [];
@@ -67,7 +67,7 @@ module.exports = function (req, res, next) {
                     promises.push(otherUser.save());
                 }
                 
-                if (isOtherDogInMyDogsLikes) {
+                if (isOtherDogInMyDogsLikes && !isMyDogInOtherDogsLikes) {
                     // Añadir match
                     let match = {
                         dog_1: 
