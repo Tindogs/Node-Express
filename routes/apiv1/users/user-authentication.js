@@ -18,7 +18,7 @@ module.exports = function (req, res, next) {
                     
                 }
          
-                winston.info('Usuario autenticado. Nombre: %s, Email: %s', data.name, data.email);
+                winston.info('Usuario autenticado. Nombre: %s, Email: %s', data.first_name, data.email);
                 res.json({ success: true, token: tokens.createToken(data), result: data });
             } catch (error) {
                 next(error);
