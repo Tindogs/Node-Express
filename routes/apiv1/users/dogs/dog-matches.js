@@ -18,19 +18,20 @@ module.exports = function (req, res, next) {
     Promise.all([Match.find({ 'dog_1.id_dog_matched': dogId }), Match.find({ 'dog_2.id_dog_matched': dogId })])
         .then(results => {
             
-            var response= results[0].map(match => match.dog_2);
-          
-            let dogsIds = results[0].map(match => match.dog_2.id_dog_matched.toString());
+            let dogsIds = [];
+            var response= [];
+            var dogs = [...results[0].map(match => match.dog_2), ...results[1].map(match => match.dog_1)];
            
-            results[1].forEach(match => {
+            dogs.forEach(dog => {
 
-                if (dogsIds.indexOf(match.dog_1.id_dog_matched.toString()) === -1) { 
-                    response.push(match.dog_1);
+                if (dogsIds.indexOf(dog.id_dog_matched.toString()) === -1) { 
+                    response.push(dog);
+                    dogsIds.push(dog.id_dog_matched.toString());
                 }
             });
             
            
-            res.json({ success: true, result: removeDuplicates(response) });
+            res.json({ success: true, result: response });
         }).catch((err) => {
             next(err);
             return;

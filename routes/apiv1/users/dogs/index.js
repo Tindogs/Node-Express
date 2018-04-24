@@ -50,6 +50,13 @@ router.put('/', auth, require('./dog-register'));
 // }
 router.put('/:dogId', auth, require('./dog-update'));
 
+/* Get Dog By UserId and DogsId */
+// GET HTTP METHOD
+// Needs a valid token, a pair of key:value named token at the header
+// EXAMPLE: http://localhost:3000/apiv1/users/5aa997a2d5d9b8046a908253/dogs/5ab7c85875b8dcb2053db1e0
+
+router.get('/:dogId', auth, require('./dogs-get'));
+
 /* Find Dogs By UserId, DogId */
 // GET HTTP METHOD
 // Needs a valid token, a pair of key:value named token at the header
