@@ -8,12 +8,8 @@ module.exports = function (req, res, next) {
     let dogId = req.params.dogId;
 
     User.findOne({ '_id': userId, 'dogs._id': dogId },
-        { 'dogs.$': 1, 'coordinates': 1 },
-        (err, user) => {
-            if (err) {
-                next(err);
-                return;
-            }
+        { 'dogs.$': 1, 'coordinates': 1 })
+        .then(user => {
             let query = user.dogs[0].query;
            
             if (query && (query.age || query.breed || query.max_kms) ) {
@@ -21,10 +17,7 @@ module.exports = function (req, res, next) {
                     let maxDistance = geoUtils.getRadsFromDistance(query.max_kms);
                     User.where('coordinates').near({ center: user.coordinates, maxDistance: maxDistance, spherical: true, })
                         .where('_id').ne(user._id)
-                        .exec((err, result) => {
-                            if (err) {
-                                next(err);
-                            }
+                        .then( result => {
                             let dogs = result.map(user => user.dogs).reduce(function (a, b) {
                                 return a.concat(b);
                             }, []).filter(dog => {
@@ -52,11 +45,7 @@ module.exports = function (req, res, next) {
                         .match(searchFilter)
                         .unwind('dogs')
                         .match(searchFilter)
-                        .exec((err, result) => {
-                            if (err) {
-                                next(err);
-                            }
-                            
+                        .then(result => {
                             let dogs = result
                                 .filter(userFiltered => userFiltered._id.toString() !== user._id.toString())
                                 .map(user => user.dogs);
@@ -67,6 +56,10 @@ module.exports = function (req, res, next) {
             } else { 
                 res.json({ success: true, result: [] });
             }
+        })
+        .catch(err => {
+            next(err);
+            return;
         });
     
 };

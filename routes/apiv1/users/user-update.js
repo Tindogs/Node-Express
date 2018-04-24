@@ -4,7 +4,7 @@ const dbUtils = require('../../../lib/dbutils');
 
 module.exports = function (req, res, next) {
     let userId = req.params.id;
-    let update = dbUtils.getDogUpdateFields(req.body);
+    let update = dbUtils.getUpdateUserFields(req.body);
   
     User.findByIdAndUpdate ({ '_id': userId},
         { $set: update },
@@ -15,5 +15,9 @@ module.exports = function (req, res, next) {
             }
 
             res.json({ success: true, result: userUpdate });
+        })
+        .catch(err => {
+            next(err);
+            return;
         });
 };

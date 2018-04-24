@@ -2,13 +2,12 @@
 const User = require('../../../../models/User');
 
 module.exports = function (req, res, next) {
-    User.findById(req.params.id, (err, users) => {
-        if (err) {
+    User.findById(req.params.id).
+        then(user => {
+        res.json({ success: true, result: user });
+        })
+        .catch(err => {
             next(err);
             return;
-        }
-
-        res.json({ success: true, result: users });
-
-    });
+        });
 };
