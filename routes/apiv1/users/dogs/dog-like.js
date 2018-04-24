@@ -46,6 +46,12 @@ module.exports = function (req, res, next) {
             .then(results => {
                 let otherUser = results[0];
                 let myUser = results[1];
+                if (otherUser._id.toString() === myUser._id.toString()) { 
+                    var err = new Error('Can`t match with your own dogs');
+                    err.status = 409;
+                    throw err;
+                    
+                }
                 let otherDog = otherUser.dogs.filter(dog => dog._id.toString() === otherDogId.toString())[0];
                 let myDog = myUser.dogs.filter(dog => dog._id.toString() === dogId.toString())[0];
                 var result = { match: false };
@@ -73,11 +79,13 @@ module.exports = function (req, res, next) {
                         dog_1: 
                         {
                             id_dog_matched: myDog._id,
+                            id_user_dog_matched: myUser._id,    
                             name_dog_matched: myDog.name,
                             img_dog_matched: myDog.photos[0]
                         },
                         dog_2: {
                             id_dog_matched: otherDog._id,
+                            id_user_dog_matched: otherUser._id,
                             name_dog_matched: otherDog.name,
                             img_dog_matched: otherDog.photos[0]
                         }
@@ -91,7 +99,7 @@ module.exports = function (req, res, next) {
             })
             .then(results => {
                 
-                res.json({ success: true, result: { match: results[results.length - 1] } });
+                res.json({ success: true, result: results[results.length - 1] });
             })
             .catch((err) => {
                 next(err);

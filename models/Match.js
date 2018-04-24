@@ -8,11 +8,13 @@ const ObjectId = mongoose.Schema.ObjectId;
 const matchSchema = mongoose.Schema({
     dog_1: {
         id_dog_matched: ObjectId,
+        id_user_dog_matched: ObjectId,
         name_dog_matched: String,
         img_dog_matched: String
     },
     dog_2: {
         id_dog_matched: ObjectId,
+        id_user_dog_matched: ObjectId,
         name_dog_matched: String,
         img_dog_matched: String
     },
