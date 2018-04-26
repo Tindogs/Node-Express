@@ -79,7 +79,7 @@ app.use(function(err, req, res, next) {
             const culture = req.query.culture || req.body.culture;
             res.json(err.toPrettyObject(culture));
         } else {
-            res.json({ succes: false, error: err.message });
+            res.json({ success: false, error: err.message });
         }
         return;
     }
