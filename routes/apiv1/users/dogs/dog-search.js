@@ -10,8 +10,13 @@ module.exports = function (req, res, next) {
     User.findOne({ '_id': userId, 'dogs._id': dogId },
         { 'dogs.$': 1, 'coordinates': 1 })
         .then(user => {
+            if (user === null) { 
+                var err = new Error('User or dog not found');
+                err.status = 409;
+                throw err;
+            }
             let query = user.dogs[0].query;
-           
+          
             if (query && (query.age || query.breed || query.max_kms) ) {
                 if (user.coordinates && user.coordinates.length > 0 && query.max_kms) {
                     let maxDistance = geoUtils.getRadsFromDistance(query.max_kms);
@@ -58,6 +63,7 @@ module.exports = function (req, res, next) {
             }
         })
         .catch(err => {
+          
             next(err);
             return;
         });
