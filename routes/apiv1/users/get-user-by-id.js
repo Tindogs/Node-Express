@@ -8,6 +8,13 @@ module.exports = function (req, res, next) {
             return;
         }
 
+	if (users === null){
+		var err = new Error('User not found');
+		err.status = 404;
+		next(err);
+		return;
+	}
+
         res.json({ success: true, result: users });
 
     });
