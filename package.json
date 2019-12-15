@@ -18,7 +18,7 @@
     "jwt-simple": "^0.5.3",
     "moment": "^2.21.0",
     "mongoose": "^5.7.5",
-    "morgan": "~1.9.0",
+    "morgan": "~1.9.1",
     "serve-favicon": "~2.4.5",
     "sha256": "^0.2.0",
     "winston": "^2.3.1"
